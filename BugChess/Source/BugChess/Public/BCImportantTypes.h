@@ -24,10 +24,10 @@ enum EChessPiece
 	ECP_None = 0		UMETA(DisplayName="None"),
 	ECP_Pawn = 1		UMETA(DisplayName="Pawn"),
 	ECP_Knight = 2		UMETA(DisplayName="Knight"),
-	ECP_Bishop = 3		UMETA(DisplayName="Knight"),
-	ECP_Rook = 3		UMETA(DisplayName="Rook"),
-	ECP_Queen = 3		UMETA(DisplayName="Queen"),
-	ECP_King = 3		UMETA(DisplayName="King")
+	ECP_Bishop = 3		UMETA(DisplayName="Bishop"),
+	ECP_Rook = 4		UMETA(DisplayName="Rook"),
+	ECP_Queen = 5		UMETA(DisplayName="Queen"),
+	ECP_King = 6		UMETA(DisplayName="King")
 };
 
 UCLASS()

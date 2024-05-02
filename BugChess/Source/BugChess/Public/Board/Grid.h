@@ -30,6 +30,9 @@ public:
 	FVector GetWorldPosition(int X, int Y);
 
 	UFUNCTION(BlueprintCallable)
+	FVector GetCellCenterWorldPosition(int X, int Y);
+
+	UFUNCTION(BlueprintCallable)
 	void GetGridPosition(FVector WorldPosition, int& X, int& Y);
 
 	UFUNCTION(BlueprintCallable)

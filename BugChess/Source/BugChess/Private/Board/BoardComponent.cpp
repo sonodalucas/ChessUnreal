@@ -70,11 +70,11 @@ void UBoardComponent::SpawnPiece(EChessPiece ChessPiece, EChessColour Colour, in
 	const auto PieceInfo = GlobalSettings->GetPiecesDataAsset()->FindRow<FPieceInfo>(FName(PieceText.ToString()), "UBoardComponent::CreatePiece");
 	if (!PieceInfo)
 	{
-		UE_LOG(LogBoard, Error, TEXT("Piece [%s] not found in the pieces data table!"), *UEnum::GetValueAsString(ChessPiece))
+		UE_LOG(LogBoard, Error, TEXT("Piece [%s] not found in the pieces data table!"), *PieceText.ToString())
 		return;
 	}
-
-	const auto Piece = GetWorld()->SpawnActor<ABCPiece>(PieceClass, Grid->GetWorldPosition(PositionX, PositionY), FRotator::ZeroRotator);
+	UE_LOG(LogBoard, Log, TEXT("Spawning piece [%s]."), *PieceText.ToString())
+	const auto Piece = GetWorld()->SpawnActor<ABCPiece>(PieceClass, Grid->GetCellCenterWorldPosition(PositionX, PositionY), FRotator::ZeroRotator);
 	Piece->SetupPiece(Colour, PieceInfo->PieceMesh);
 }
 

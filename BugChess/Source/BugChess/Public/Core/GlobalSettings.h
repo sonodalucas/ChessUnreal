@@ -21,6 +21,9 @@ public:
 
 	UFUNCTION(BlueprintPure,  Category = "GlobalSettings|Pieces")
 	FLinearColor GetPieceColour(EChessColour colour) const;
+
+	UFUNCTION(BlueprintPure,  Category = "GlobalSettings|Pieces")
+	FRotator GetPieceRotator(EChessColour colour) const;
 	
 private:
 	UPROPERTY(EditAnywhere, Category = "GlobalSettings|Data Tables")
@@ -31,4 +34,10 @@ private:
 
 	UPROPERTY(EditAnywhere, Category="Pieces")
 	FLinearColor BlackColour;
+
+	UPROPERTY(EditAnywhere, Category="Pieces")
+	FRotator WhiteRotator;
+
+	UPROPERTY(EditAnywhere, Category="Pieces")
+	FRotator BlackRotator;
 };

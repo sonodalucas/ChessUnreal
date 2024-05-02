@@ -7,3 +7,8 @@ FLinearColor UGlobalSettings::GetPieceColour(EChessColour colour) const
 {
 	return colour == EChessColour::ECC_White ? WhiteColour : BlackColour;
 }
+
+FRotator UGlobalSettings::GetPieceRotator(EChessColour colour) const
+{
+	return colour == EChessColour::ECC_White ? WhiteRotator : BlackRotator;
+}

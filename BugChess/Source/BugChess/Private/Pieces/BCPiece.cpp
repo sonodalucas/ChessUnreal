@@ -20,6 +20,7 @@ ABCPiece::ABCPiece()
 void ABCPiece::SetupPiece(EChessColour Colour, UStaticMesh* Mesh)
 {
 	StaticMesh->SetStaticMesh(Mesh);
+	SetActorRotation(UBCFunctionLibrary::GetGlobalSettings()->GetPieceRotator(Colour));
 	SetPieceColour(Colour);
 }
 

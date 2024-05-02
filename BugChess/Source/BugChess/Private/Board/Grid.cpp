@@ -43,13 +43,18 @@ void UGrid::InitGrid(int height, int width, float cellSize, FVector originPositi
 
 FVector UGrid::GetWorldPosition(int X, int Y)
 {
-	return (FVector(X, Y, 0) * CellSize) + OriginPosition;
+	return (FVector(Y, X, 0) * CellSize) + OriginPosition;
+}
+
+FVector UGrid::GetCellCenterWorldPosition(int X, int Y)
+{
+	return GetWorldPosition(X, Y) + FVector(GetCellSize() / 2, GetCellSize() / 2, 0);
 }
 
 void UGrid::GetGridPosition(FVector WorldPosition, int& X, int& Y)
 {
-	X = FMath::FloorToInt((WorldPosition - OriginPosition).X / CellSize);
 	X = FMath::FloorToInt((WorldPosition - OriginPosition).Y / CellSize);
+	Y = FMath::FloorToInt((WorldPosition - OriginPosition).X / CellSize);
 }
 
 UCellObject* UGrid::GetGridObject(int X, int Y)

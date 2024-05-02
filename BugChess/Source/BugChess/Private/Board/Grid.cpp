@@ -91,13 +91,13 @@ void UGrid::SetGridObject(FVector WorldPosition, UCellObject* GridObject)
 	SetGridObject(x, y, GridObject);
 }
 
-void UGrid::TriggerGridObjectChanged(int X, int Y)
+void UGrid::TriggerGridObjectChanged(int X, int Y) const
 {
 	if (OnGridCellObjectChanged.IsBound())
 		OnGridCellObjectChanged.Broadcast(X, Y);
 }
 
-bool UGrid::IsInsideGrid(int X, int Y)
+bool UGrid::IsInsideGrid(int X, int Y) const
 {
 	return X >= 0 && X < Width && Y >= 0 && Y < Height;
 }

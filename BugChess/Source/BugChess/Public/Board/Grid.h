@@ -40,9 +40,9 @@ public:
 	void SetGridObject(int X, int Y, UCellObject* GridObject);
 	void SetGridObject(FVector WorldPosition, UCellObject* GridObject);
 
-	void TriggerGridObjectChanged(int X, int Y);
+	void TriggerGridObjectChanged(int X, int Y) const;
 
-	bool IsInsideGrid(int X, int Y);
+	bool IsInsideGrid(int X, int Y) const;
 
 	UFUNCTION(BlueprintCallable)
 	int GetWidth() const { return Width; }

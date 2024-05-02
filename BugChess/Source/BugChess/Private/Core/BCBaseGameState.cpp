@@ -7,6 +7,5 @@ void ABCBaseGameState::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Board = NewObject<UGrid>();
-	Board->InitGrid(8, 8, 150, FVector(0, 0, 100));
+	
 }

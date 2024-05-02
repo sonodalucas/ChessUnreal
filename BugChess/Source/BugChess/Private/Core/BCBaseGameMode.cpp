@@ -2,3 +2,15 @@
 
 
 #include "BugChess/Public/Core/BCBaseGameMode.h"
+
+ABCBaseGameMode::ABCBaseGameMode()
+{
+	Board = CreateDefaultSubobject<UBoardComponent>(FName("Board"));
+}
+
+void ABCBaseGameMode::BeginPlay()
+{
+	Super::BeginPlay();
+
+	Board->StartBoard();
+}

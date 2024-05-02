@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Board/BoardComponent.h"
 #include "GameFramework/GameMode.h"
 #include "BCBaseGameMode.generated.h"
 
@@ -13,4 +14,12 @@ UCLASS()
 class BUGCHESS_API ABCBaseGameMode : public AGameMode
 {
 	GENERATED_BODY()
+
+	ABCBaseGameMode();
+
+	virtual void BeginPlay() override;
+
+protected:
+	UPROPERTY(EditAnywhere)
+	UBoardComponent* Board;
 };

@@ -18,6 +18,5 @@ class BUGCHESS_API ABCBaseGameState : public AGameState
 	virtual void BeginPlay() override;
 
 protected:
-	UPROPERTY(VisibleAnywhere)
-	UGrid* Board;
+	
 };

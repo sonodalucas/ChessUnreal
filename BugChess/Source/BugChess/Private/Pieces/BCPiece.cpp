@@ -17,8 +17,10 @@ ABCPiece::ABCPiece()
 	StaticMesh->SetupAttachment(RootComponent);
 }
 
-void ABCPiece::SetupPiece(EChessColour Colour, UStaticMesh* Mesh)
+void ABCPiece::SetupPiece(const EChessPiece PieceType, const EChessColour PieceColour, UStaticMesh* Mesh)
 {
+	Colour = PieceColour;
+	Type = PieceType;
 	StaticMesh->SetStaticMesh(Mesh);
 	SetActorRotation(UBCFunctionLibrary::GetGlobalSettings()->GetPieceRotator(Colour));
 	SetPieceColour(Colour);

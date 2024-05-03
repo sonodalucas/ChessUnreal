@@ -19,6 +19,9 @@ class BUGCHESS_API ABCBaseGameMode : public AGameMode
 
 	virtual void BeginPlay() override;
 
+public:
+	UBoardComponent* GetBoard() const { return Board; }
+
 protected:
 	UPROPERTY(EditAnywhere)
 	UBoardComponent* Board;

@@ -16,7 +16,11 @@ public:
 	// Sets default values for this actor's properties
 	ABCPiece();
 
-	void SetupPiece(EChessColour Colour, UStaticMesh* Mesh);
+	void SetupPiece(EChessPiece PieceType, EChessColour PieceColour, UStaticMesh* Mesh);
+
+	EChessPiece GetType() const { return Type; }
+
+	EChessColour GetColour() const { return Colour; }
 
 
 protected:
@@ -30,6 +34,10 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	UMaterialInterface* MaterialInterface;
+
+	EChessPiece Type;
+
+	EChessColour Colour;
 
 private:
 	UPROPERTY()

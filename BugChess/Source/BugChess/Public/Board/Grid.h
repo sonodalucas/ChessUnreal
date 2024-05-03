@@ -8,6 +8,7 @@
 #include "Grid.generated.h"
 
 class UCellObject;
+class ABCPiece;
 DECLARE_LOG_CATEGORY_EXTERN(LogGrid, Log, All);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGridCell, int, PositionX, int, PositionY);
@@ -24,7 +25,7 @@ class BUGCHESS_API UGrid : public UObject
 public:
 	FOnGridCell OnGridCellObjectChanged;
 	
-	void InitGrid(int height, int width, float cellSize, FVector originPosition);
+	void InitGrid(int height, int width, float cellSize, FVector originPosition, TSubclassOf<UCellObject> CellClass);
 	
 	UFUNCTION(BlueprintCallable)
 	FVector GetWorldPosition(int X, int Y);
@@ -105,9 +106,11 @@ class UChessCellObject : public UCellObject
 	GENERATED_BODY()
 
 public:
-	void SetCellColour(TEnumAsByte<EChessColour> cellColour);
+	void SetPiece(ABCPiece* NewPiece);
+
+	ABCPiece* GetPiece() const { return Piece;}
 
 protected:
 	UPROPERTY(VisibleAnywhere)
-	TEnumAsByte<EChessColour> CellColour;
+	ABCPiece* Piece;
 };

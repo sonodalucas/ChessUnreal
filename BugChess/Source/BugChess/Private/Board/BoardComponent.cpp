@@ -75,7 +75,9 @@ void UBoardComponent::SpawnPiece(EChessPiece ChessPiece, EChessColour Colour, in
 	}
 	UE_LOG(LogBoard, Log, TEXT("Spawning piece [%s]."), *PieceText.ToString())
 	const auto Piece = GetWorld()->SpawnActor<ABCPiece>(PieceClass, Grid->GetCellCenterWorldPosition(PositionX, PositionY), FRotator::ZeroRotator);
-	Piece->SetupPiece(Colour, PieceInfo->PieceMesh);
+	Piece->SetupPiece(ChessPiece, Colour, PieceInfo->PieceMesh);
+	UChessCellObject* CellObject = Cast<UChessCellObject>(Grid->GetGridObject(PositionX, PositionY));
+	CellObject->SetPiece(Piece);
 }
 
 
@@ -85,8 +87,8 @@ void UBoardComponent::BeginPlay()
 	Super::BeginPlay();
 
 	Grid = NewObject<UGrid>();
-	Grid->InitGrid(8, 8, 150, FVector(0, 0, 30));
-	
+	Grid->InitGrid(8, 8, 150, FVector(0, 0, 30), CellClass);
+	StartBoard();
 }
 
 

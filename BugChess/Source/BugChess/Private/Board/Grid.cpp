@@ -5,7 +5,7 @@
 
 DEFINE_LOG_CATEGORY(LogGrid);
 
-void UGrid::InitGrid(int height, int width, float cellSize, FVector originPosition)
+void UGrid::InitGrid(int height, int width, float cellSize, FVector originPosition, TSubclassOf<UCellObject> CellClass)
 {
 	Height = height;
 	Width = width;
@@ -16,7 +16,7 @@ void UGrid::InitGrid(int height, int width, float cellSize, FVector originPositi
 	// Initialize grid
 	for (int i = 0; i < Height * Width; ++i)
 	{
-		const auto CellObject = NewObject<UCellObject>();
+		UCellObject* CellObject = NewObject<UCellObject>(GetTransientPackage(), CellClass);
 		const int x = i % Width;
 		const int y = i / Width;
 		CellObject->Initialize(this, x, y);
@@ -115,8 +115,8 @@ void UCellObject::Initialize(UGrid* grid, int x, int y)
 	
 }
 
-void UChessCellObject::SetCellColour(TEnumAsByte<EChessColour> cellColour)
+void UChessCellObject::SetPiece(ABCPiece* NewPiece)
 {
-	CellColour = cellColour;
+	Piece = NewPiece;
 	Grid->TriggerGridObjectChanged(X, Y);
 }

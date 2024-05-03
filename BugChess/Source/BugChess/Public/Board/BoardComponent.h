@@ -21,6 +21,8 @@ public:
 
 	void StartBoard();
 
+	UGrid* GetGrid() const { return Grid; }
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -32,4 +34,7 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<ABCPiece> PieceClass;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UCellObject> CellClass;
 };

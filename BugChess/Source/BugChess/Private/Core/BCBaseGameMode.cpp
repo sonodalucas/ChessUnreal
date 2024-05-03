@@ -11,6 +11,4 @@ ABCBaseGameMode::ABCBaseGameMode()
 void ABCBaseGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-
-	Board->StartBoard();
 }

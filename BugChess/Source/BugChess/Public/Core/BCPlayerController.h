@@ -53,12 +53,23 @@ protected:
 	void Move(const FInputActionValue& Value);
 
 	UFUNCTION()
+	void MoveCompleted(const FInputActionValue& Value);
+
+	UFUNCTION()
 	void UnlockMoveInput();
 	
 private:
-	FVector2d CurrentPosition;
+	FVector2d currentPosition;
 
-	FTimerHandle MoveCooldownHandle;
+	FTimerHandle moveCooldownHandle;
 
-	bool MoveCooldown = false;
+	bool moveCooldown = false;
+
+	FVector2d inputVector;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	float lerpAnalogFactor = 8;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	float analogDeadzone = .3f;
 };

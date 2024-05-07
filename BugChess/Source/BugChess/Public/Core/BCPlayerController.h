@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BCImportantTypes.h"
 #include "GameFramework/PlayerController.h"
 #include "BCPlayerController.generated.h"
 
@@ -57,6 +58,12 @@ protected:
 
 	UFUNCTION()
 	void UnlockMoveInput();
+
+	UFUNCTION()
+	void StartPlayerTurn(EChessColour Colour);
+
+	UFUNCTION()
+	void EndPlayerTurn(EChessColour Colour);
 	
 private:
 	FVector2d currentPosition;

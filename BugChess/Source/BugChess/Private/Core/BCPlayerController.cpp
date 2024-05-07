@@ -5,6 +5,8 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "Core/BCBaseGameMode.h"
+#include "Core/CustomLogging.h"
+#include "Core/BCPlayerState.h"
 
 
 void ABCPlayerController::BeginPlay()
@@ -13,6 +15,9 @@ void ABCPlayerController::BeginPlay()
 
 	GameMode = Cast<ABCBaseGameMode>(GetWorld()->GetAuthGameMode());
 	currentPosition = FVector2d::Zero();
+
+	GameMode->OnTurnStarted.AddDynamic(this, &ABCPlayerController::StartPlayerTurn);
+	GameMode->OnTurnEnded.AddDynamic(this, &ABCPlayerController::EndPlayerTurn);
 }
 
 void ABCPlayerController::SetupInputComponent()
@@ -44,23 +49,26 @@ void ABCPlayerController::SetupInputComponent()
 void ABCPlayerController::Confirm()
 {
 	const auto Grid = GameMode->GetBoard()->GetGrid();
+	const auto Cell = Cast<UChessCellObject>(Grid->GetGridObject(currentPosition.X, currentPosition.Y));
 
-	const auto Piece = Cast<UChessCellObject>(Grid->GetGridObject(currentPosition.X, currentPosition.Y))->GetPiece();
+	GameMode->Confirm(Cell);
+
+	const auto Piece = Cell->GetPiece();
 
 	if (!Piece)
 	{
-		UE_LOG(LogTemp, Log, TEXT("No piece at [%.0f, %.0f]."), currentPosition.X, currentPosition.Y)
+		UE_LOGFMT(LogChessPlayerController, Log, "No piece at [{0}, {1}].", currentPosition.X, currentPosition.Y);
 		return;
 	}
 
-	UE_LOG(LogTemp, Log, TEXT("[%s %s] at [%.0f, %.0f]"), *UEnum::GetDisplayValueAsText(Piece->GetColour()).ToString(),
-		*UEnum::GetDisplayValueAsText(Piece->GetType()).ToString(), currentPosition.X, currentPosition.Y)
+	UE_LOGFMT(LogChessPlayerController, Log, "[{0} {1}] at [{2}, {3}]", *UEnum::GetDisplayValueAsText(Piece->GetColour()).ToString(),
+		*UEnum::GetDisplayValueAsText(Piece->GetType()).ToString(), currentPosition.X, currentPosition.Y);
 
 }
 
 void ABCPlayerController::Return()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Return"))
+	GameMode->UnselectPiece();
 }
 
 void ABCPlayerController::Move(const FInputActionValue& Value)
@@ -76,13 +84,13 @@ void ABCPlayerController::Move(const FInputActionValue& Value)
 	if (moveCooldown || analogDeadzone > inputVector.Length()) return;
 	moveCooldown = true;
 	
-	UE_LOG(LogTemp, Warning, TEXT("Input vector [%s]"), *inputVector.ToString())
+	// UE_LOG(LogTemp, Warning, TEXT("Input vector [%s]"), *inputVector.ToString())
 	int PositionX = FMath::Clamp(currentPosition.X + FMath::RoundFromZero(inputVector.X), 0, 7);
 	int PositionY = FMath::Clamp(currentPosition.Y + FMath::RoundFromZero(inputVector.Y), 0, 7);
 	
 	currentPosition = FVector2d(PositionX, PositionY);
 
-	UE_LOG(LogTemp, Warning, TEXT("Current position [%s]"), *currentPosition.ToString())
+	// UE_LOG(LogTemp, Warning, TEXT("Current position [%s]"), *currentPosition.ToString())
 
 	
 	const auto Grid = GameMode->GetBoard()->GetGrid();
@@ -107,4 +115,22 @@ void ABCPlayerController::MoveCompleted(const FInputActionValue& Value)
 void ABCPlayerController::UnlockMoveInput()
 {
 	moveCooldown = false;
+}
+
+void ABCPlayerController::StartPlayerTurn(EChessColour Colour)
+{
+	// TODO: Reactivate this when the AIC is implemented
+	// if (Cast<ABCPlayerState>(PlayerState)->GetPlayerColour() == Colour)
+	// {
+	// 	EnableInput(this);
+	// }
+}
+
+void ABCPlayerController::EndPlayerTurn(EChessColour Colour)
+{
+	// TODO: Reactivate this when the AIC is implemented
+	// if (Cast<ABCPlayerState>(PlayerState)->GetPlayerColour() == Colour)
+	// {
+	// 	DisableInput(this);
+	// }
 }

@@ -13,9 +13,8 @@
 UENUM(BlueprintType)
 enum EChessColour
 {
-	ECC_None = 0		UMETA(DisplayName="None"),
-	ECC_White = 1		UMETA(DisplayName="White"),
-	ECC_Black = 2		UMETA(DisplayName="Black")
+	ECC_White = 0		UMETA(DisplayName="White"),
+	ECC_Black = 1		UMETA(DisplayName="Black")
 };
 
 UENUM(BlueprintType)

@@ -7,6 +7,8 @@
 #include "GameFramework/GameMode.h"
 #include "BCBaseGameMode.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnTurnEvent, EChessColour, Colour);
+
 /**
  * 
  */
@@ -20,9 +22,41 @@ class BUGCHESS_API ABCBaseGameMode : public AGameMode
 	virtual void BeginPlay() override;
 
 public:
+	UPROPERTY()
+	FOnTurnEvent OnTurnStarted;
+
+	FOnTurnEvent OnTurnEnded;
+	
 	UBoardComponent* GetBoard() const { return Board; }
+
+	UFUNCTION()
+	void Confirm(UChessCellObject* CellObject);
+
+	UFUNCTION()
+	void ChoosePiece(UChessCellObject* CellObject);
+
+	UFUNCTION()
+	void MovePiece(UChessCellObject* DestinationCell);
+
+	UFUNCTION()
+	void UnselectPiece();
 
 protected:
 	UPROPERTY(EditAnywhere)
 	UBoardComponent* Board;
+
+private:
+	UPROPERTY()
+	TEnumAsByte<EChessColour> CurrentTurn;
+
+	UPROPERTY()
+	ABCPiece* PieceSelected;
+
+	void StartGame();
+
+	UFUNCTION()
+	void StartTurn();
+
+	UFUNCTION()
+	void EndTurn();
 };

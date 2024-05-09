@@ -18,4 +18,7 @@ class BUGCHESS_API UBCFunctionLibrary : public UBlueprintFunctionLibrary
 public:
 	UFUNCTION(BlueprintPure)
 	static UGlobalSettings* GetGlobalSettings();
+
+	UFUNCTION(BlueprintPure)
+	static FBoardInfo GetPositionsFromFen(FString Fen);
 };

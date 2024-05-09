@@ -11,6 +11,8 @@ DECLARE_LOG_CATEGORY_EXTERN(LogChessGameMode, Log, All)
 
 DECLARE_LOG_CATEGORY_EXTERN(LogChessPlayerController, Log, All)
 
+DECLARE_LOG_CATEGORY_EXTERN(LogBCFunctionLibrary, Log, All)
+
 /**
  * 
  */

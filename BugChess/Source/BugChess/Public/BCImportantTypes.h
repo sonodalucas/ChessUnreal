@@ -10,6 +10,8 @@
  * 
  */
 
+
+
 UENUM(BlueprintType)
 enum EChessColour
 {
@@ -43,7 +45,61 @@ struct FPieceInfo : public FTableRowBase
 public:
 	UPROPERTY(EditAnywhere)
 	UStaticMesh* PieceMesh = nullptr;
+};
 
+USTRUCT(BlueprintType)
+struct FPositionInfo
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadOnly)
+	TEnumAsByte<EChessColour> Colour;
+
+	UPROPERTY(BlueprintReadOnly)
+	TEnumAsByte<EChessPiece> Piece;
+
+	FPositionInfo()
+	{
+		Colour = ECC_White;
+		Piece = EChessPiece::ECP_None;
+	}
+};
+
+USTRUCT(BlueprintType)
+struct FBoardInfo
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadOnly)
+	TArray<FPositionInfo> PositionsArray;
+
+	// Castling
+	UPROPERTY(BlueprintReadOnly)
+	bool WhiteCastleKingSide = true;
 	
+	UPROPERTY(BlueprintReadOnly)
+	bool WhiteCastleQueenSide = true;
 	
+	UPROPERTY(BlueprintReadOnly)
+	bool BlackCastleKingSide = true;
+	
+	UPROPERTY(BlueprintReadOnly)
+	bool BlackCastleQueenSide = true;
+	
+	// En passant file (0 is a-file, 7 is h-file, -1 means none)
+	UPROPERTY(BlueprintReadOnly)
+	int EpFile = -1;
+	
+	UPROPERTY(BlueprintReadOnly)
+	bool WhiteToMove = true;
+	
+	// Number of half-moves since last capture or pawn advance
+	// (starts at 0 and increments after each player's move)
+	UPROPERTY(BlueprintReadOnly)
+	int HalfMoveCount = 0;
+	
+	// Total number of moves played in the game
+	// (starts at 1 and increments after black's move)
+	UPROPERTY(BlueprintReadOnly)
+	int FullMoveCount = 0;
 };

@@ -10,8 +10,10 @@
 
 DECLARE_LOG_CATEGORY_EXTERN(LogBoard, Log, All);
 
+#define STARTING_LAYOUT TEXT("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
+
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class BUGCHESS_API UBoardComponent : public USceneComponent
+class BUGCHESS_API UBoardComponent : public UActorComponent
 {
 	GENERATED_BODY()
 

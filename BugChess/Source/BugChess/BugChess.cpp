@@ -8,3 +8,4 @@ IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, BugChess, "BugChess" );
 
 DEFINE_LOG_CATEGORY(LogChessGameMode);
 DEFINE_LOG_CATEGORY(LogChessPlayerController);
+DEFINE_LOG_CATEGORY(LogBCFunctionLibrary);

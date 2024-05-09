@@ -5,6 +5,7 @@
 #include "Core/CustomLogging.h"
 #include "Core/BCPlayerState.h"
 #include "Kismet/GameplayStatics.h"
+#include "Library/BCFunctionLibrary.h"
 
 ABCBaseGameMode::ABCBaseGameMode()
 {

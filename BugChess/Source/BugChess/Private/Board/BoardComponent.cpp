@@ -9,6 +9,7 @@
 
 DEFINE_LOG_CATEGORY(LogBoard);
 
+
 // Sets default values for this component's properties
 UBoardComponent::UBoardComponent()
 {
@@ -21,42 +22,15 @@ UBoardComponent::UBoardComponent()
 
 void UBoardComponent::StartBoard()
 {
-	for (int i = 0; i < 8; ++i)
+	// TODO: The StartBoard method needs to receive the FEN string as a parameter
+	FBoardInfo BoardInfo = UBCFunctionLibrary::GetPositionsFromFen(STARTING_LAYOUT);
+
+	for (int i = 0; i < 64; ++i)
 	{
-		SpawnPiece(EChessPiece::ECP_Pawn, EChessColour::ECC_Black, i, 6);
-		SpawnPiece(EChessPiece::ECP_Pawn, EChessColour::ECC_White, i, 1);
+		if (EChessPiece::ECP_None == BoardInfo.PositionsArray[i].Piece)
+			continue;
 
-		switch (i)
-		{
-		case 0:
-		case 7:
-			SpawnPiece(EChessPiece::ECP_Rook, EChessColour::ECC_Black, i, 7);
-			SpawnPiece(EChessPiece::ECP_Rook, EChessColour::ECC_White, i, 0);
-			break;
-
-		case 1:
-		case 6:
-			SpawnPiece(EChessPiece::ECP_Knight, EChessColour::ECC_Black, i, 7);
-			SpawnPiece(EChessPiece::ECP_Knight, EChessColour::ECC_White, i, 0);
-			break;
-
-		case 2:
-		case 5:
-			SpawnPiece(EChessPiece::ECP_Bishop, EChessColour::ECC_Black, i, 7);
-			SpawnPiece(EChessPiece::ECP_Bishop, EChessColour::ECC_White, i, 0);
-			break;
-
-		case 3:
-			SpawnPiece(EChessPiece::ECP_Queen, EChessColour::ECC_Black, i, 7);
-			SpawnPiece(EChessPiece::ECP_Queen, EChessColour::ECC_White, i, 0);
-			break;
-			
-		case 4:
-			SpawnPiece(EChessPiece::ECP_King, EChessColour::ECC_Black, i, 7);
-			SpawnPiece(EChessPiece::ECP_King, EChessColour::ECC_White, i, 0);
-			break;
-		default: ;
-		}
+		SpawnPiece(BoardInfo.PositionsArray[i].Piece, BoardInfo.PositionsArray[i].Colour, i % 8, i / 8);
 	}
 }
 

@@ -9,6 +9,8 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnTurnEvent, EChessColour, Colour);
 
+#define STARTING_LAYOUT TEXT("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
+
 /**
  * 
  */
@@ -41,9 +43,15 @@ public:
 	UFUNCTION()
 	void UnselectPiece();
 
+	UFUNCTION()
+	FBoardInfo GetBoardInfo() { return BoardInfo; }
+
 protected:
 	UPROPERTY(EditAnywhere)
 	UBoardComponent* Board;
+
+	UPROPERTY(EditAnywhere)
+	FString FenString;
 
 private:
 	UPROPERTY()
@@ -51,6 +59,9 @@ private:
 
 	UPROPERTY()
 	ABCPiece* PieceSelected;
+
+	UPROPERTY()
+	FBoardInfo BoardInfo;
 
 	void StartGame();
 

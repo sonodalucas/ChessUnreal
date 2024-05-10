@@ -10,7 +10,7 @@
 
 DECLARE_LOG_CATEGORY_EXTERN(LogBoard, Log, All);
 
-#define STARTING_LAYOUT TEXT("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
+
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class BUGCHESS_API UBoardComponent : public UActorComponent
@@ -21,7 +21,7 @@ public:
 	// Sets default values for this component's properties
 	UBoardComponent();
 
-	void StartBoard();
+	void StartBoard(FBoardInfo BoardInfo);
 
 	UGrid* GetGrid() const { return Grid; }
 
@@ -39,4 +39,27 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UCellObject> CellClass;
+
+	uint64& GetPositionsOfPieceType(EChessPiece PieceType);
+
+	uint64& GetPositionsOfPlayer(EChessColour PlayerColour);
+
+	uint64 GetAllPiecesPosition() const;
+
+private:
+	uint64 whitePiecesPositions = 0;
+
+	uint64 blackPiecesPositions = 0;
+
+	uint64 rooksPositions = 0;
+
+	uint64 bishopsPositions = 0;
+
+	uint64 knightsPositions = 0;
+
+	uint64 queensPositions = 0;
+
+	uint64 kingsPositions = 0;
+
+	uint64 pawnsPositions = 0;
 };

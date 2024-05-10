@@ -61,6 +61,10 @@ void ABCBaseGameMode::UnselectPiece()
 
 void ABCBaseGameMode::StartGame()
 {
+	const FString Fen = FenString.IsEmpty() ? STARTING_LAYOUT : FenString;
+	BoardInfo = UBCFunctionLibrary::GetPositionsFromFen(Fen);
+	Board->StartBoard(BoardInfo);
+	
 	// It will be changed to white on the StartTurn method
 	CurrentTurn = EChessColour::ECC_Black;
 

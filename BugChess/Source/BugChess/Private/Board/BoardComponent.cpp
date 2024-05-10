@@ -2,7 +2,8 @@
 
 
 #include "Board/BoardComponent.h"
-
+#include "Core/CustomLogging.h"
+#include "Core/BCBaseGameMode.h"
 #include "Core/GlobalSettings.h"
 #include "Library/BCFunctionLibrary.h"
 #include "Pieces/BCPiece.h"
@@ -20,18 +21,20 @@ UBoardComponent::UBoardComponent()
 	// ...
 }
 
-void UBoardComponent::StartBoard()
+void UBoardComponent::StartBoard(FBoardInfo BoardInfo)
 {
-	// TODO: The StartBoard method needs to receive the FEN string as a parameter
-	FBoardInfo BoardInfo = UBCFunctionLibrary::GetPositionsFromFen(STARTING_LAYOUT);
-
 	for (int i = 0; i < 64; ++i)
 	{
 		if (EChessPiece::ECP_None == BoardInfo.PositionsArray[i].Piece)
 			continue;
-
+		
+		GetPositionsOfPieceType(BoardInfo.PositionsArray[i].Piece) |= 1ull << i;
+		GetPositionsOfPlayer(BoardInfo.PositionsArray[i].Colour) |= 1ull << i;
+		
 		SpawnPiece(BoardInfo.PositionsArray[i].Piece, BoardInfo.PositionsArray[i].Colour, i % 8, i / 8);
+		
 	}
+	UE_LOGFMT(LogBoard, Warning, "Bit test: {0}", pawnsPositions & whitePiecesPositions);
 }
 
 void UBoardComponent::SpawnPiece(EChessPiece ChessPiece, EChessColour Colour, int PositionX, int PositionY) const
@@ -54,6 +57,46 @@ void UBoardComponent::SpawnPiece(EChessPiece ChessPiece, EChessColour Colour, in
 	CellObject->SetPiece(Piece);
 }
 
+uint64& UBoardComponent::GetPositionsOfPieceType(EChessPiece PieceType)
+{
+	if (PieceType == ECP_Pawn)
+	{
+		return pawnsPositions;
+	}
+	if (PieceType == ECP_Knight)
+	{
+		return knightsPositions;
+	}
+	if (PieceType == ECP_Bishop)
+	{
+		return bishopsPositions;
+	}
+	if (PieceType == ECP_Rook)
+	{
+		return rooksPositions;
+	}
+	if (PieceType == ECP_Queen)
+	{
+		return queensPositions;
+	}
+
+	return kingsPositions;
+}
+
+uint64& UBoardComponent::GetPositionsOfPlayer(EChessColour PlayerColour)
+{
+	if (PlayerColour == ECC_White)
+	{
+		return whitePiecesPositions;
+	}
+	return blackPiecesPositions;
+}
+
+uint64 UBoardComponent::GetAllPiecesPosition() const
+{
+	return whitePiecesPositions || blackPiecesPositions;
+}
+
 
 // Called when the game starts
 void UBoardComponent::BeginPlay()
@@ -62,7 +105,6 @@ void UBoardComponent::BeginPlay()
 
 	Grid = NewObject<UGrid>();
 	Grid->InitGrid(8, 8, 150, FVector(0, 0, 30), CellClass);
-	StartBoard();
 }
 
 

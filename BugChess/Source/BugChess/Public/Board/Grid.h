@@ -89,6 +89,9 @@ class UCellObject : public UObject
 public:
 	void Initialize(UGrid* grid, int x, int y);
 
+	UFUNCTION(BlueprintPure)
+	FVector2D GetPositionOnGrid() const { return FVector2D(X, Y); }
+
 protected:
 	UPROPERTY()
 	UGrid* Grid;

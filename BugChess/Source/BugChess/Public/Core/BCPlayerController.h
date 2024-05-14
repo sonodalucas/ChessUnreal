@@ -60,10 +60,10 @@ protected:
 	void UnlockMoveInput();
 
 	UFUNCTION()
-	void StartPlayerTurn(EChessColour Colour);
+	void StartPlayerTurn(bool WhiteToMove);
 
 	UFUNCTION()
-	void EndPlayerTurn(EChessColour Colour);
+	void EndPlayerTurn(bool WhiteToMove);
 	
 private:
 	FVector2d currentPosition;

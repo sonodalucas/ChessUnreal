@@ -68,7 +68,7 @@ void ABCPlayerController::Confirm()
 
 void ABCPlayerController::Return()
 {
-	GameMode->UnselectPiece();
+	GameMode->UnselectCell();
 }
 
 void ABCPlayerController::Move(const FInputActionValue& Value)
@@ -108,7 +108,6 @@ void ABCPlayerController::MoveCompleted(const FInputActionValue& Value)
 	if(MovementVector.Length() == 0)
 	{
 		inputVector = FVector2d::Zero();
-		UE_LOG(LogTemp, Warning, TEXT("Movement vector [%s]"), *MovementVector.ToString())
 	}
 }
 
@@ -117,7 +116,7 @@ void ABCPlayerController::UnlockMoveInput()
 	moveCooldown = false;
 }
 
-void ABCPlayerController::StartPlayerTurn(EChessColour Colour)
+void ABCPlayerController::StartPlayerTurn(bool WhiteToMove)
 {
 	// TODO: Reactivate this when the AIC is implemented
 	// if (Cast<ABCPlayerState>(PlayerState)->GetPlayerColour() == Colour)
@@ -126,7 +125,7 @@ void ABCPlayerController::StartPlayerTurn(EChessColour Colour)
 	// }
 }
 
-void ABCPlayerController::EndPlayerTurn(EChessColour Colour)
+void ABCPlayerController::EndPlayerTurn(bool WhiteToMove)
 {
 	// TODO: Reactivate this when the AIC is implemented
 	// if (Cast<ABCPlayerState>(PlayerState)->GetPlayerColour() == Colour)

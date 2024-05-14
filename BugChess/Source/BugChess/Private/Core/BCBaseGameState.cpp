@@ -9,3 +9,17 @@ void ABCBaseGameState::BeginPlay()
 
 	
 }
+
+void ABCBaseGameState::Init(const int HalfMoves, const int FullMoves)
+{
+	HalfMoveCount = HalfMoves;
+	FullMoveCount = FullMoves;
+}
+
+void ABCBaseGameState::IncrementFullMoveCount()
+{
+}
+
+void ABCBaseGameState::IncrementHalfMoveCount()
+{
+}

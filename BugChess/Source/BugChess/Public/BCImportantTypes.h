@@ -15,14 +15,15 @@
 UENUM(BlueprintType)
 enum EChessColour
 {
-	ECC_White = 0		UMETA(DisplayName="White"),
-	ECC_Black = 1		UMETA(DisplayName="Black")
+	ECC_None = 0		UMETA(DisplayName="None", Hidden),
+	ECC_White = 1		UMETA(DisplayName="White"),
+	ECC_Black = 2		UMETA(DisplayName="Black")
 };
 
 UENUM(BlueprintType)
 enum EChessPiece
 {
-	ECP_None = 0		UMETA(DisplayName="None"),
+	ECP_None = 0		UMETA(DisplayName="None", Hidden),
 	ECP_Pawn = 1		UMETA(DisplayName="Pawn"),
 	ECP_Knight = 2		UMETA(DisplayName="Knight"),
 	ECP_Bishop = 3		UMETA(DisplayName="Bishop"),
@@ -60,7 +61,7 @@ struct FPositionInfo
 
 	FPositionInfo()
 	{
-		Colour = ECC_White;
+		Colour = ECC_None;
 		Piece = EChessPiece::ECP_None;
 	}
 };

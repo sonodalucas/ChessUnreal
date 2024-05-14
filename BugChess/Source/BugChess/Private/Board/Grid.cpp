@@ -21,7 +21,6 @@ void UGrid::InitGrid(int height, int width, float cellSize, FVector originPositi
 		const int y = i / Width;
 		CellObject->Initialize(this, x, y);
 		GridArray.Add(CellObject);
-		UE_LOG(LogGrid, Log, TEXT("Initialized [%d, %d] grid cell."), x, y);
 	}
 
 	if (!ShowDebug) return;
@@ -39,6 +38,7 @@ void UGrid::InitGrid(int height, int width, float cellSize, FVector originPositi
 	DrawDebugLine(GEngine->GetCurrentPlayWorld(), GetWorldPosition(0, Height), GetWorldPosition(Width,  Height), FColor::Emerald, true, -1, 0, 10);
 	DrawDebugLine(GEngine->GetCurrentPlayWorld(), GetWorldPosition(Width, 0), GetWorldPosition(Width,  Height), FColor::Emerald, true, -1, 0, 10);
 
+	
 }
 
 FVector UGrid::GetWorldPosition(int X, int Y)

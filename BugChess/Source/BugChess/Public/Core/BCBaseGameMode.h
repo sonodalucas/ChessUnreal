@@ -7,7 +7,8 @@
 #include "GameFramework/GameMode.h"
 #include "BCBaseGameMode.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnTurnEvent, EChessColour, Colour);
+class ABCBaseGameState;
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnTurnEvent, bool, WhiteToMove);
 
 #define STARTING_LAYOUT TEXT("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
 
@@ -31,6 +32,8 @@ public:
 	
 	UBoardComponent* GetBoard() const { return Board; }
 
+	TEnumAsByte<EChessColour> GetActiveColour() const { return whiteToMove ? EChessColour::ECC_White : EChessColour::ECC_Black; }
+
 	UFUNCTION()
 	void Confirm(UChessCellObject* CellObject);
 
@@ -41,10 +44,7 @@ public:
 	void MovePiece(UChessCellObject* DestinationCell);
 
 	UFUNCTION()
-	void UnselectPiece();
-
-	UFUNCTION()
-	FBoardInfo GetBoardInfo() { return BoardInfo; }
+	void UnselectCell();
 
 protected:
 	UPROPERTY(EditAnywhere)
@@ -52,16 +52,13 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	FString FenString;
-
+	
 private:
 	UPROPERTY()
-	TEnumAsByte<EChessColour> CurrentTurn;
+	bool whiteToMove;
 
 	UPROPERTY()
-	ABCPiece* PieceSelected;
-
-	UPROPERTY()
-	FBoardInfo BoardInfo;
+	UChessCellObject* CellSelected;
 
 	void StartGame();
 
@@ -69,5 +66,5 @@ private:
 	void StartTurn();
 
 	UFUNCTION()
-	void EndTurn();
+	void EndTurn() const;
 };

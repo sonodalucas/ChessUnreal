@@ -2,9 +2,10 @@
 
 
 #include "BugChess/Public/Core/BCBaseGameMode.h"
+
+#include "Core/BCBaseGameState.h"
 #include "Core/CustomLogging.h"
 #include "Core/BCPlayerState.h"
-#include "Kismet/GameplayStatics.h"
 #include "Library/BCFunctionLibrary.h"
 
 ABCBaseGameMode::ABCBaseGameMode()
@@ -21,7 +22,7 @@ void ABCBaseGameMode::BeginPlay()
 
 void ABCBaseGameMode::Confirm(UChessCellObject* CellObject)
 {
-	if (PieceSelected)
+	if (CellSelected)
 		MovePiece(CellObject);
 	else
 		ChoosePiece(CellObject);
@@ -35,6 +36,14 @@ void ABCBaseGameMode::ChoosePiece(UChessCellObject* CellObject)
 		return;
 	}
 
+	if (!IsValid(CellObject->GetPiece()))
+	{
+		UE_LOGFMT(LogChessGameMode, Warning, "The cell given is null!");
+		return;
+	}
+
+	CellSelected = CellObject;
+	
 	// TODO: Get the legal moves for the given piece
 }
 
@@ -45,28 +54,35 @@ void ABCBaseGameMode::MovePiece(UChessCellObject* DestinationCell)
 		UE_LOGFMT(LogChessGameMode, Warning, "The destination cell given is null!");
 		return;
 	}
-	if (!PieceSelected)
+	if (!CellSelected)
 	{
-		UE_LOGFMT(LogChessGameMode, Warning, "There is no piece selected!");
+		UE_LOGFMT(LogChessGameMode, Warning, "There is no cell selected!");
 		return;
 	}
-	
-	EndTurn();
+
+	if (Board->MovePiece(CellSelected, DestinationCell))
+	{
+		CellSelected = nullptr;
+		EndTurn();
+	}
 }
 
-void ABCBaseGameMode::UnselectPiece()
+void ABCBaseGameMode::UnselectCell()
 {
-	PieceSelected = nullptr;
+	CellSelected = nullptr;
 }
 
 void ABCBaseGameMode::StartGame()
 {
 	const FString Fen = FenString.IsEmpty() ? STARTING_LAYOUT : FenString;
-	BoardInfo = UBCFunctionLibrary::GetPositionsFromFen(Fen);
+	const auto BoardInfo = UBCFunctionLibrary::GetPositionsFromFen(Fen);
 	Board->StartBoard(BoardInfo);
-	
-	// It will be changed to white on the StartTurn method
-	CurrentTurn = EChessColour::ECC_Black;
+
+
+	GetGameState<ABCBaseGameState>()->Init(BoardInfo.HalfMoveCount, BoardInfo.FullMoveCount);
+
+	// It will be changed to the correct turn in the StartTurn() method
+	whiteToMove = !BoardInfo.WhiteToMove;
 
 	// TODO: Uncomment this code when the AI is working, the AIC will be created around here.
 	// const EChessColour PlayerColour = TEnumAsByte<EChessColour>(FMath::RandRange(0, 1));
@@ -78,14 +94,15 @@ void ABCBaseGameMode::StartGame()
 void ABCBaseGameMode::StartTurn()
 {
 	// Increment turn
-	CurrentTurn = TEnumAsByte<EChessColour>((CurrentTurn + 1) % 2);
-	OnTurnStarted.Broadcast(CurrentTurn);
+	whiteToMove = !whiteToMove;
+	OnTurnStarted.Broadcast(whiteToMove);
 
-	UE_LOGFMT(LogChessGameMode, Log, "Starting [{0}] player turn.", UEnum::GetDisplayValueAsText(CurrentTurn).ToString());
+	UE_LOGFMT(LogChessGameMode, Log, "Starting [{0}] player turn.", whiteToMove ? *FString("White") : *FString("Black"));
 }
 
-void ABCBaseGameMode::EndTurn()
+void ABCBaseGameMode::EndTurn() const
 {
-	UE_LOGFMT(LogChessGameMode, Log, "Ending [{0}] player turn.", UEnum::GetDisplayValueAsText(CurrentTurn).ToString());
-	OnTurnEnded.Broadcast(CurrentTurn);
+	GetGameState<ABCBaseGameState>()->IncrementFullMoveCount();
+	UE_LOGFMT(LogChessGameMode, Log, "Ending [{0}] player turn.", whiteToMove ? *FString("White") : *FString("Black"));
+	OnTurnEnded.Broadcast(whiteToMove);
 }
